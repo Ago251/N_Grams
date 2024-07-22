@@ -9,7 +9,7 @@ public class ProbabilityActionHandler : MonoBehaviour
     private PlayerBase player;
 
     [SerializeField]
-    private List<SignType> _actions = new List<SignType>();
+    private List<SignType> _history = new List<SignType>();
 
     private Dictionary<string, int> _patterns = new Dictionary<string, int>();
 
@@ -26,9 +26,9 @@ public class ProbabilityActionHandler : MonoBehaviour
 
     private void OnSignPlayed(SignType signType)
     {
-        _actions.Add(signType);
+        _history.Add(signType);
 
-        if (_actions.Count >= n_grams)
+        if (_history.Count >= n_grams)
         {
             string pattern = CreatePattern();
 
@@ -41,7 +41,7 @@ public class ProbabilityActionHandler : MonoBehaviour
 
     public SignType GetActionWithHighProbility()
     {
-        if (_actions.Count < n_grams)
+        if (_history.Count < n_grams)
             return (SignType)UnityEngine.Random.Range(0, 2);
 
         var prefix = CreatePrefix();
@@ -72,9 +72,9 @@ public class ProbabilityActionHandler : MonoBehaviour
     private string CreatePattern()
     {
         string pattern = string.Empty;
-        for (int i = _actions.Count - n_grams; i < _actions.Count; i++)
+        for (int i = _history.Count - n_grams; i < _history.Count; i++)
         {
-            pattern += _actions[i].GetShortString();
+            pattern += _history[i].GetShortString();
         }
 
         return pattern;
@@ -83,9 +83,9 @@ public class ProbabilityActionHandler : MonoBehaviour
     private string CreatePrefix()
     {
         string pattern = string.Empty;
-        for (int i = _actions.Count - (n_grams - 1); i < _actions.Count; i++)
+        for (int i = _history.Count - (n_grams - 1); i < _history.Count; i++)
         {
-            pattern += _actions[i].GetShortString();
+            pattern += _history[i].GetShortString();
         }
 
         return pattern;
