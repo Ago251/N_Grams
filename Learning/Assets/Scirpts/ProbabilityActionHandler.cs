@@ -11,7 +11,7 @@ public class ProbabilityActionHandler : MonoBehaviour
     [SerializeField]
     private List<SignType> _actions = new List<SignType>();
 
-    private Dictionary<string, int> _grams = new Dictionary<string, int>();
+    private Dictionary<string, int> _patterns = new Dictionary<string, int>();
 
     private void Awake()
     {
@@ -32,10 +32,10 @@ public class ProbabilityActionHandler : MonoBehaviour
         {
             string pattern = CreatePattern();
 
-            if (!_grams.ContainsKey(pattern))
-                _grams.Add(pattern, 0);
+            if (!_patterns.ContainsKey(pattern))
+                _patterns.Add(pattern, 0);
 
-            _grams[pattern]++;
+            _patterns[pattern]++;
         }
     }
 
@@ -45,7 +45,7 @@ public class ProbabilityActionHandler : MonoBehaviour
             return (SignType)UnityEngine.Random.Range(0, 2);
 
         var prefix = CreatePrefix();
-        var patternKeys = _grams.Keys.Where(key => key.StartsWith(prefix));
+        var patternKeys = _patterns.Keys.Where(key => key.StartsWith(prefix));
         
         
         if (patternKeys.Count() == 0)
@@ -57,13 +57,13 @@ public class ProbabilityActionHandler : MonoBehaviour
         
         foreach (var key in patternKeys)
         {
-            if (_grams[key] > currentProbability)
+            if (_patterns[key] > currentProbability)
             {
                 pattern = key;
-                currentProbability = _grams[key];
+                currentProbability = _patterns[key];
 
             }
-            Debug.Log($"Action: {key}, Description: {_grams[key]}");
+            Debug.Log($"Action: {key}, Description: {_patterns[key]}");
         }
 
         return SignTypeUtility.ConvertStringToType(pattern[pattern.Length - 1]);
