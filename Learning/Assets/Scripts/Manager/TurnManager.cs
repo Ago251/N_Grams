@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
     [SerializeField]
     private PlayerBase[] players;
+    [SerializeField]
+    private Button newTurnButton;
 
     private int currentPlayer;
 
@@ -11,12 +14,24 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
+        newTurnButton.onClick.AddListener(StartNewTurn);
+
         foreach (var player in players)
         {
             player.OnSignPlayed += OnPlayerPlayed;
         }
 
         players[currentPlayer].StartTurn();
+    }
+
+    private void OnDestroy()
+    {
+        newTurnButton.onClick.RemoveListener(StartNewTurn);
+
+        foreach (var player in players)
+        {
+            player.OnSignPlayed -= OnPlayerPlayed;
+        }
     }
 
     private void OnPlayerPlayed(SignType signType)
@@ -28,48 +43,49 @@ public class TurnManager : MonoBehaviour
 
         if (currentPlayer > players.Length - 1)
         {
-            DisplayWinText(signType);
-            currentPlayer = 0;
-            Debug.Log("----------------------------");
-            Debug.Log("New turn");
+            EndTurn(signType);
         }
+        else
+        {
+            players[currentPlayer].StartTurn();
+        }
+    }
 
+    private void StartNewTurn()
+    {
+        foreach (var player in players)
+            player.SetStatus(PlayerStatus.Playing);
+
+        newTurnButton.gameObject.SetActive(false);
+        currentPlayer = 0;
         players[currentPlayer].StartTurn();
     }
 
-    public void DisplayWinText(SignType playerSign)
+    private void EndTurn(SignType signType)
+    {
+        foreach (var player in players)
+            player.ShowSign();
+
+        UpdatePlayerStatus(signType);
+        currentPlayer = 0;
+        newTurnButton.gameObject.SetActive(true);
+    }
+
+    public void UpdatePlayerStatus(SignType playerSign)
     {
         switch (playerSign)
         {
             case SignType.Rock:
-                if (aiSign == SignType.Paper)
-                {
-                    Debug.Log("AI Win");
-                }
-                else if (aiSign == SignType.Scissor)
-                {
-                    Debug.Log("Player Win");
-                }
+                players[0].SetStatus(aiSign == SignType.Paper ? PlayerStatus.Winner : PlayerStatus.Loser);
+                players[1].SetStatus(aiSign == SignType.Scissor ? PlayerStatus.Winner : PlayerStatus.Loser);
                 break;
             case SignType.Paper:
-                if (aiSign == SignType.Scissor)
-                {
-                    Debug.Log("AI Win");
-                }
-                else if (aiSign == SignType.Rock)
-                {
-                    Debug.Log("Player Win");
-                }
+                players[0].SetStatus(aiSign == SignType.Scissor ? PlayerStatus.Winner : PlayerStatus.Loser);
+                players[1].SetStatus(aiSign == SignType.Rock ? PlayerStatus.Winner : PlayerStatus.Loser);
                 break;
             case SignType.Scissor:
-                if (aiSign == SignType.Rock)
-                {
-                    Debug.Log("AI Win");
-                }
-                else if (aiSign == SignType.Paper)
-                {
-                    Debug.Log("Player Win");
-                }
+                players[0].SetStatus(aiSign == SignType.Rock ? PlayerStatus.Winner : PlayerStatus.Loser);
+                players[1].SetStatus(aiSign == SignType.Paper ? PlayerStatus.Winner : PlayerStatus.Loser);
                 break;
         }
     }

@@ -8,12 +8,17 @@ public abstract class PlayerBase : MonoBehaviour
     [SerializeField]
     private UIPlayer uiPlayer;
 
-    public abstract void StartTurn();
+    [SerializeField]
+    private SignType selectedSign;
 
-    protected virtual void DrawSymbol(SignType symbol)
+    public abstract void StartTurn();
+    public virtual void ShowSign() => uiPlayer.SetSign(selectedSign);
+    public void SetStatus(PlayerStatus status) => uiPlayer.SetStatus(status);
+    protected virtual void DrawSymbol(SignType sign)
     {
-        uiPlayer.SetSign(symbol);
-        OnSignPlayed?.Invoke(symbol);
+        selectedSign = sign;
+        OnSignPlayed?.Invoke(sign);
     }
+
 }
 
