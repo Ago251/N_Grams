@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7585839ac95cee34fbe180438148c8ef, type: 3}
+  m_Name: UIPlayerData
+  m_EditorClassIdentifier: 
+  Scissor: {fileID: 21300000, guid: aa80f36c991ba894fb61e4e529c861fd, type: 3}
+  Rock: {fileID: 21300000, guid: 67d0937cb975d924280b3cadb9eb2a4c, type: 3}
+  Paper: {fileID: 21300000, guid: 388cfd51f6b34bf4db320c759415c44a, type: 3}
