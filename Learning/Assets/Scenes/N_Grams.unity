@@ -883,6 +883,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiPlayer: {fileID: 372582126}
+  selectedSign: 0
 --- !u!1 &1193567329
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,6 +1050,10 @@ MonoBehaviour:
   players:
   - {fileID: 104261568}
   - {fileID: 794349761}
+  signButtons:
+  - {fileID: 1777823798}
+  - {fileID: 1284864178}
+  - {fileID: 439109653}
   newTurnButton: {fileID: 100546051}
 --- !u!4 &1203381999
 Transform:

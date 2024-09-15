@@ -6,6 +6,8 @@ public class TurnManager : MonoBehaviour
     [SerializeField]
     private PlayerBase[] players;
     [SerializeField]
+    private Button[] signButtons;
+    [SerializeField]
     private Button newTurnButton;
 
     private int currentPlayer;
@@ -56,6 +58,8 @@ public class TurnManager : MonoBehaviour
         foreach (var player in players)
             player.SetStatus(PlayerStatus.Playing);
 
+        SetActiveAllSignButtons(true);
+
         newTurnButton.gameObject.SetActive(false);
         currentPlayer = 0;
         players[currentPlayer].StartTurn();
@@ -66,9 +70,17 @@ public class TurnManager : MonoBehaviour
         foreach (var player in players)
             player.ShowSign();
 
+        SetActiveAllSignButtons(false);
+
         UpdatePlayerStatus(signType);
         currentPlayer = 0;
         newTurnButton.gameObject.SetActive(true);
+    }
+
+    private void SetActiveAllSignButtons(bool active)
+    {
+        foreach (var button in signButtons)
+            button.gameObject.SetActive(active);
     }
 
     public void UpdatePlayerStatus(SignType playerSign)
